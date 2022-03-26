@@ -9,25 +9,9 @@ jobs:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Install dpkg and fakeroot
-          command: |
-            sudo apt-get update -y
-            sudo apt-get install -y dpkg fakeroot
-
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Generate Builds
-          command: npm run make
-
-      - store_artifacts:
-          path: ~/repo/out/make
+      - node/install:
+          node-version: '16.13'
+      - run: node --version
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
