@@ -20,6 +20,7 @@ jobs:
           command: |
             sudo apt-get update -y
             sudo apt-get install -y dpkg fakeroot
+            sudo apt install rpm
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
