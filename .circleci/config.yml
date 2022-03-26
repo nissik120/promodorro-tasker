@@ -2,7 +2,7 @@ version: 2.1
 orbs: 
   node: circleci/node@4.9.0
 jobs:
-  tasker-run:
+  build:
     docker:
       - image: cimg/base:stable
     steps:
@@ -35,4 +35,4 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - tasker-run
+      - build
