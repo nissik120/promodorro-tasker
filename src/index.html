@@ -1,12 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
+    <link href="./index.css" rel="stylesheet">
+    <title>Tasker</title>
   </head>
   <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
+
+    <div class="main wrapper">
+      <div class="header"></div>
+      <div class="progress">
+        <h1>Daily Progress</h1>
+        <div class="pg-bar-wrap padding-even">
+          <div class="pg-bar"></div>
+        </div>
+        <p>28 of 30 Tasks completed -> 93&percnt;</p>
+      </div>
+      <div class="tasklist">
+        <div class="tasklist-header row">
+          <h1>Daily Tasklist</h1>
+          <button>Edit Tasks</button>
+        </div>
+        <p>List auto resets at <span>0.00</span>hrs. <a href="#">Edit Reset Here</a></p>
+        <div>
+          <button><i>&#8679;</i></button>
+          <div class="tasklist-view padding-vert">
+          </div>
+          <button><i>&#8681;</i></button>
+        </div>
+      </div>
+      <div class="sidebar"></div>
+    </div>
+    <div class="footer"></div>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./index.js"></script>
   </body>
 </html>

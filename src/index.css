@@ -1,7 +1,81 @@
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+:root{
+  --clr-bg: #e4e4e4;
+  --clr-sb: #f5f5f5;
+  --clr-acc: #666666;
+  --clr-blk: #000000;
+  --clr-white: #ffffff;
+}
+
+body{
+  font-family: "Roboto Mono";
+  background: var(--clr-bg);
+}
+
+/*
+    General Fixes
+*/
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.padding-even{
+    padding: 0.5rem;
+}
+
+.padding-horz{
+    padding: 0.5rem 0;
+}
+
+.padding-vert{
+    padding: 0 0.5rem;
+}
+
+h1{
+    font-family: "Roboto";
+    font-size: 0.875rem;
+}
+
+h2{
+    font-size: 0.65rem;
+}
+
+p, label, input, button{
+    font-size: 0.65rem;
+}
+
+/*
+    Main Page: Progress Bar
+*/
+
+.pg-bar-wrap{
+    border: 2px solid var(--clr-blk);
+}
+
+.pg-bar{
+    background-color: var(--clr-blk);
+    width: 93%;
+    height: 0.625rem;
+}
+
+.task-item-details{
+    border-left-style: dashed;
+    padding-left: 0.5rem;
+}
+
+.vert{
+    height: 0.5rem;
+    border-left-style: dashed;
+    padding-left: 0.5rem;
+}
+
+.empty-state{
+    height: 100px;
+    margin: auto;
 }

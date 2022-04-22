@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
+    <link href="./index.css" rel="stylesheet">
+    <title>Preferences | Tasker</title>
+  </head>
+  <body>
+
+    <form id="options-form" class="main wrapper">
+      <div class="header options-header">
+        <h1>APP SETTINGS</h1>
+        <p>Let's help you manage those tasks better. Divide and conquer.</p>
+        <p>Time yourself and set goals to be completed for each set time segment.</p>
+      </div>
+      <div class="name-option">
+        <h1>Username</h1>
+        <p>How would you prefer being called</p>
+        <input type="text" id="name-option-text">
+      </div>
+      <div class="tasklist-options">
+        <h1>Tasklist Options</h1>
+        <div>
+          <div class="padding-vert">
+            <p><strong>Default</strong>: auto resets at <span>0.00</span> hrs. <strong>Edit Below</strong></p>
+            <div class="row">
+              <label for="hours">Hour:</label>
+              <select id="hours" name="hours">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option selected="selected" value="12">12</option>
+              </select>
+
+              <label for="mins">Min:</label>
+              <select id="mins" name="mins">
+                <option selected="selected" value="0">0</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+              </select>
+
+              <label for="day-time">AM/PM:</label>
+              <select id="day-time" name="day-time">
+                <option selected="selected" value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+            <br>
+            <button>Clear/Default</button>
+          </div>
+
+          <div class="padding-vert">
+            <p><strong>Default</strong>: Each session is <span>25</span> minutes. <strong>Edit Below</strong></p>
+            <input type="text" id="session-mins-text">
+            <button>Clear/Default</button>
+          </div>
+
+          <div class="padding-vert">
+            <p><strong>Default</strong>: Each break is <span>5</span> minutes. <strong>Edit Below</strong></p>
+            <input type="text" id="pause-mins-text">
+            <button>Clear/Default</button>
+          </div>
+
+          <button class="options-submit" type="submit">Submit <i>&#10233;</i></button>
+        </div>
+      </div>
+    </form>
+    <div class="footer"></div>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./prefs.js"></script>
+  </body>
+</html>

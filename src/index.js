@@ -1,47 +1,54 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+const { ipcRenderer } = require('electron/renderer');
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  // eslint-disable-line global-require
-  app.quit();
-}
+const headerView = document.querySelector('.header');
+const tasklistView = document.querySelector('.tasklist-view');
+let itemList = [];
 
-const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+window.onload = ()=>{
+
+  
+
+  window.taskerAPI.getUsername((e, name)=>{
+
+    console.log(name);
+
+    let headerHtml = `<h1>Hi ${name}</h1>
+    <p>Almost done for the day. Just one final push.</p>`;
+  
+    headerView.innerHTML = headerHtml;
+  
+  });
+  
+  if(itemList.length==0){
+    tasklistView.innerHTML = `
+    <div class="empty-state">
+      <p>Nothing To See Here!!</p>
+      <p>Add some tasks</p>
+    </div>`;
+  }
+  
+  window.electronAPI.getItem((e, item)=>{
+    let itemHtml = "";
+    itemList = [...itemList, item];
+    console.log(itemList);
+    itemList.forEach(item => {
+      itemHtml +=`<div class="vert"></div>
+        <div class="task-item">
+          <p>9:00 am</p>
+          <div class="task-item-details">
+            <h2>${item['title']}</h2>
+            <p>${item['group']}</p>
+          </div>
+          <p>9:30 am</p>
+        </div>
+        <div class="vert"></div>
+        `;
+    });
+    tasklistView.innerHTML = itemHtml;
+    console.log(tasklistView);
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+}
 
-  // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
-};
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
