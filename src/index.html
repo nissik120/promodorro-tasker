@@ -9,31 +9,159 @@
     <title>Tasker</title>
   </head>
   <body>
+    <div class="sidebar-btns column">
+      <button class="tablinks" id="home-btn" onclick="openTabView(event, 'home')">&#127968; Home</button>
+      <button class="tablinks" id="edit-btn" onclick="openTabView(event, 'edit')">&#9997; Edit</button>
+      <button class="tablinks" id="prefs-btn" onclick="openTabView(event, 'prefs')">&#128736; Setup</button>
+      <button class="tablinks" id="info-btn" onclick="openTabView(event, 'info')">&#8505; About</button>
+    </div>
 
-    <div class="main wrapper">
+    <div id="home" class="main wrapper">
       <div class="header"></div>
-      <div class="progress">
-        <h1>Daily Progress</h1>
-        <div class="pg-bar-wrap padding-even">
-          <div class="pg-bar"></div>
-        </div>
-        <p>28 of 30 Tasks completed -> 93&percnt;</p>
-      </div>
+      <div class="progress"></div>
       <div class="tasklist">
         <div class="tasklist-header row">
           <h1>Daily Tasklist</h1>
-          <button>Edit Tasks</button>
         </div>
-        <p>List auto resets at <span>0.00</span>hrs. <a href="#">Edit Reset Here</a></p>
+        <div class="tasklist-timer-view row">
+        </div>
         <div>
-          <button><i>&#8679;</i></button>
+          <button id="prev-btn"><i>&#8679;</i></button>
           <div class="tasklist-view padding-vert">
           </div>
-          <button><i>&#8681;</i></button>
+          <button id="next-btn"><i>&#8681;</i></button>
         </div>
       </div>
-      <div class="sidebar"></div>
     </div>
+
+    <div id="edit" class="main wrapper">
+      <div class="add">
+        <h1>ADD TASK</h1>
+        <form id="add-form">
+          <div class="form-group">
+            <label>Title</label>
+            <textarea id="itemTitle" autofocus></textarea>
+            
+          </div>
+          <div class="form-group">
+            <label>Group</label>
+            <input type="text" id="itemGroup">
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+  
+      </div>
+
+<!--       <div>
+        <h1>Swap / Shift</h1>
+        <form>
+          <div class="form-group">
+            <label>Switch Values</label>
+            <input type="text"> ->
+            <input type="text">
+          </div>
+          <button>Switch</button>
+        </form>
+  
+      </div>
+  
+      <div class="remove">
+        <h1>Remove</h1>
+        <form>
+          <div class="form-group">
+            <label>Enter Index</label>
+            <input type="text">
+          </div>
+          <button>Clear</button>
+          <button>Clear All</button>
+        </form>
+  
+      </div> -->
+
+
+    </div>
+
+    <div id="prefs" class="main wrapper">
+      <form id="options-form" class="wrapper">
+        <div class="header options-header">
+          <h1>APP SETTINGS</h1>
+          <p>Let's help you manage those tasks better. Divide and conquer.</p>
+          <p>Time yourself and set goals to be completed for each set time segment.</p>
+        </div>
+        <div class="name-option">
+          <h1>Username</h1>
+          <p>How would you prefer being called</p>
+          <input type="text" id="name-option-text">
+        </div>
+        <div class="tasklist-options">
+          <h1>Tasklist Options</h1>
+          <div>
+            <div class="padding-vert">
+              <p><strong>Default</strong>: auto resets at <span>0.00</span> hrs. <br> <strong>Edit Below</strong></p>
+              <div class="row">
+                <label for="hours">Hour:</label>
+                <select id="hours" name="hours">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option selected="selected" value="12">12</option>
+                </select>
+  
+                <label for="mins">Min:</label>
+                <select id="mins" name="mins">
+                  <option selected="selected" value="0">0</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+                </select>
+  
+                <label for="day-time">AM/PM:</label>
+                <select id="day-time" name="day-time">
+                  <option selected="selected" value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+              <br>
+              <button>Clear/Default</button>
+            </div>
+  
+            <div class="padding-vert">
+              <p><strong>Default</strong>: Each session is <span>25</span> minutes. <br><strong>Edit Below</strong></p>
+              <input type="text" id="session-mins-text">
+              <button>Clear/Default</button>
+            </div>
+  
+            <div class="padding-vert">
+              <p><strong>Default</strong>: Each break is <span>5</span> minutes. <br><strong>Edit Below</strong></p>
+              <input type="text" id="pause-mins-text">
+              <button>Clear/Default</button>
+            </div>
+  
+            <button class="options-submit" type="submit">Submit <i>&#10233;</i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div id="info" class="main wrapper"></div>
+    
     <div class="footer"></div>
 
     <!-- You can also require other files to run in this process -->

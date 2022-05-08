@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <script></script>
+    <style>
+        body {
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            position: fixed;
+        }
+
+        .loader {
+            border: 5px solid #fc833a;
+            border-radius: 50%;
+            border-top: 5px solid #ffffff;
+            width: 40px;
+            height: 40px;
+            -webkit-animation: spin 1s linear infinite;
+            /* Safari */
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        .loader-img{
+            background-image: url("tasker-view.ico");
+            background-size: contain;
+            height: 150px;
+            width: 150px;
+            margin: auto;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .center {
+            border: none !important;
+            text-align: center;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="loader-img"></div>
+    <div class="loader">
+    </div>
+  </body>
+</html>

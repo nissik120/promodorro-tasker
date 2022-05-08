@@ -1,18 +1,33 @@
 const { app, BrowserWindow, Menu, ipcMain} = require('electron');
 const path = require('path');
-const Store = require('electron-store');
+const Store = require('../db/store.js');
 
 // Enable live reload for all the files inside your project directory
 require('electron-reload')(__dirname);
 
-const store = new Store();
+const store = new Store({
+  configName: 'user-preferences',
+  defaults:{
+    userValues:{
+      name: 'Tasker User',
+      resetTime: getDatePlusAdd(1),
+      startTime: Date.now(),
+      sessionDuration: 25,
+      pauseDuration: 5,
+    },
+  }
+});
+
+const db = new Store({
+  configName: 'user-tasklist',
+  defaults:{
+    tasklist: [],
+  }
+});
 
 const isMac = process.platform === 'darwin';
 let mainWindow;
-let prefsWindow;
-var itemList;
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   // eslint-disable-line global-require
   app.quit();
@@ -23,132 +38,79 @@ const createMainWindow = () => {
   mainWindow = new BrowserWindow({
     width: 400,
     height: 600,
+    show: false,
+    icon: 'src/tasker-view.ico',
+    resizable: false,
+    autoHideMenuBar:true,
     webPreferences:{
       nodeIntegration: true,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
     }
   });
-
-  // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // build menu from template
-  const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
-  Menu.setApplicationMenu(mainMenu);
-
-  // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
-};
-
-function createPreferenceWindow(){
-  prefsWindow = new BrowserWindow({
+  var splashWindow = new BrowserWindow({
     width: 400,
     height: 600,
-    webPreferences:{
-      nodeIntegration: true,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    }    
+    frame: false,
+    alwaysOnTop: true
   });
+  
+  splashWindow.loadFile(path.join(__dirname, 'loading.html'))
+  splashWindow.center();
+  setTimeout(function(){
+    splashWindow.close();
+    mainWindow.center();
+    mainWindow.show();
+  }, 5000);
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
+};
 
-  // and load the index.html of the app.
-  prefsWindow.loadFile(path.join(__dirname, 'prefs.html'));
-
-  prefsWindow.on('close', function(){
-    prefsWindow = null;
-  });
-
-}
-
-function createEditWindow(){
-  editWindow = new BrowserWindow({
-    width: 600,
-    height: 400,
-    webPreferences:{
-      nodeIntegration: true,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-    }    
-  });
-
-  // and load the index.html of the app.
-  editWindow.loadFile(path.join(__dirname, 'editor.html'));
-
-  editWindow.on('close', function(){
-    editWindow = null;
-  });
-
-}
-
-//Create menu template
-const mainMenuTemplate =[
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Preferences',
-        click(){
-          createPreferenceWindow();
-        }
-      },
-      {
-        label: 'Edit',
-        click(){
-          createEditWindow();
-        }
-      },
-      isMac ? {role: 'close'} : {role: 'quit'}
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://electronjs.org')
-        }
-      }
-    ]
-  }
-];
-
-if(isMac){
-  mainMenuTemplate.unshift({});
-}
-
-//add dev tools if not in prod
-if(process.env.NODE_ENV !== 'production'){
-  mainMenuTemplate.push({
-    label: 'Dev Tools',
-    submenu:[
-      {
-        label: 'Toggle DevTools',
-        accelerator: isMac?'Command+I':'Ctrl+I',
-        click(item, focusedWindow){
-          focusedWindow.toggleDevTools();
-        }
-      },
-      {role: 'reload'}
-    ]
-  });
+function getDatePlusAdd(days){
+  var result = new Date();
+  return result.setDate( result.getDate() + days);
 }
 
 app.whenReady().then(()=>{
 
+  let currentTasklist = db.get('tasklist');
+  let currentUserValues = store.get('userValues');
+
+  //console.log(db.path);
+
   createMainWindow();
 
-  ipcMain.on('set-item', function (e, item){
-    mainWindow.webContents.send('get-item', item);
-    this.editWindow.close();
+  ipcMain.on('set-user-values', function (e, newUserValues){
+    store.set('userValues', newUserValues);
   });
 
-  getSetData('set-name', 'get-name');
-  getSetData('set-reset', 'get-reset');
-  getSetData('set-session', 'get-session');
-  getSetData('set-pause', 'get-pause');
+  ipcMain.on('set-item', function (e, item){
+    let newList = [...currentTasklist, item];
+    db.set('tasklist', newList);
+  });
+
+  ipcMain.handle('get/taskItem', async (item)=>{
+    let newList = [...currentTasklist, item];
+    db.set('tasklist', newList);
+    console.log('Hey');
+    return true;
+  });
+
+  ipcMain.handle('get/taskList', async ()=>{
+    let tasklist = currentTasklist;
+    return tasklist;
+  });
+
+  ipcMain.handle('get/userValues', async ()=>{
+    let userValues = currentUserValues;
+    return userValues;
+  });
+
+  ipcMain.handle('reload/window', async ()=>{
+    BrowserWindow.getFocusedWindow().reload();
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -163,18 +125,3 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
-function getSetData(tagSet, tagGet){
-  ipcMain.on(tagSet, function (e, item){
-    //const webContents = e.sender;
-    //const win = BrowserWindow.fromWebContents(webContents);
-    //win.setItem(item);
-    mainWindow.webContents.send(tagGet, item);
-  });
-}
-
-function getStoreData(tagGet, item){
-  ipcMain.handle(tagSet, function (e, item){
-      return item ? store.get(item): ""
-  });
-}

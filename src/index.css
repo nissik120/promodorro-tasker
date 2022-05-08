@@ -9,6 +9,20 @@
 body{
   font-family: "Roboto Mono";
   background: var(--clr-bg);
+  scrollbar-width: thin;
+  padding: 0.7rem;
+}
+
+body::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+body::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, orange, darksalmon);
 }
 
 /*
@@ -50,9 +64,34 @@ p, label, input, button{
     font-size: 0.65rem;
 }
 
+
+
+
 /*
-    Main Page: Progress Bar
+    Main Page: Progress Bar 
 */
+.main{
+    display: none;
+    animation: fadeEffect 1s;
+}
+
+
+
+.sidebar-btns button .active{
+    background-color: #ff8000;
+}
+
+.sidebar-btns{
+    background-color: var(--clr-white);
+    border: 2px solid var(--clr-acc);
+    padding: 0.3rem;
+    gap: 0.5rem;
+    width: 2.5rem;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    justify-content: space-around;
+}
 
 .pg-bar-wrap{
     border: 2px solid var(--clr-blk);
@@ -60,8 +99,15 @@ p, label, input, button{
 
 .pg-bar{
     background-color: var(--clr-blk);
-    width: 93%;
     height: 0.625rem;
+}
+
+.done{
+    color: gray;
+}
+
+.pending{
+    color: gray;
 }
 
 .task-item-details{
@@ -78,4 +124,10 @@ p, label, input, button{
 .empty-state{
     height: 100px;
     margin: auto;
+}
+
+/*ANIMATIONS*/
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
