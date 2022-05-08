@@ -65,7 +65,7 @@ const createMainWindow = () => {
     mainWindow.show();
   }, 5000);
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 };
 
 function getDatePlusAdd(days){
